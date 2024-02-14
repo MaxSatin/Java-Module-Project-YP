@@ -10,6 +10,11 @@ public class Main {
         while (true) {
 
             Scanner scanner = new Scanner(System.in);
+
+            while (scanner.hasNext("[A-Za-z]+")) {
+                System.out.println("Nope, that's not it!");
+                scanner.next();
+            }
             int divide = scanner.nextInt();
 
             if (divide == 1) {
