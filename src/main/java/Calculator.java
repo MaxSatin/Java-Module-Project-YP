@@ -8,10 +8,11 @@ public class Calculator {
     Scanner scanner = new Scanner(System.in);
 
 
-    double sum = 0.00;
+    double sum;
 
     public void prodCount() {
         while (true) {
+
             System.out.println("Уточните название продукта: ");
             String name = scanner.next();
 
@@ -36,11 +37,10 @@ public class Calculator {
         while (true) {
 
             Scanner scanner = new Scanner(System.in);
-            filter();
-            int divide = scanner.nextInt();
+            int divide = filter();
 
             if (divide == 1) {
-                System.out.println("Все оплатить придется вам");
+                System.out.println("Все оплатить придется самому");
                 break;
             }
             if (divide > 1)
@@ -52,12 +52,16 @@ public class Calculator {
 
     }
 
-    public void filter () {
-        while (scanner.hasNext("[A-Za-z]+") || scanner.hasNext("[а-яА-ЯёЁ]+")) {
-            System.out.println("Пожалуйста, введите цифры");
+    public int filter () {
+        while (!scanner.hasNextInt()) {
+            System.out.println("Введите, пожалуйста число");
             scanner.next();
         }
-    }
+        int number = scanner.nextInt();
+        return number;
+        }
 
     }
+
+
 
