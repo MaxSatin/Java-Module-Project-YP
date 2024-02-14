@@ -32,4 +32,32 @@ public class Calculator {
             }
         }
     }
-}
+    public void calcStart() {
+        while (true) {
+
+            Scanner scanner = new Scanner(System.in);
+            filter();
+            int divide = scanner.nextInt();
+
+            if (divide == 1) {
+                System.out.println("Все оплатить придется вам");
+                break;
+            }
+            if (divide > 1)
+                prodCount();
+            else
+                System.out.println("Вы ввели неправильное значение. Попробуйте снова!");
+
+        }
+
+    }
+
+    public void filter () {
+        while (scanner.hasNext("[A-Za-z]+") || scanner.hasNext("[а-яА-ЯёЁ]+")) {
+            System.out.println("Пожалуйста, введите цифры");
+            scanner.next();
+        }
+    }
+
+    }
+
