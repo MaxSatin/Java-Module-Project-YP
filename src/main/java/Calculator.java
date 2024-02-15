@@ -47,7 +47,14 @@ public class Calculator {
                 scanner.next();
             }
             double price = scanner.nextDouble();
-
+            while (price < 0) {
+                System.out.println("Введите положительное число!");
+                while (!scanner.hasNextDouble()) {
+                    System.out.println("Введите, пожалуйста число формате 1,45");
+                    scanner.next();
+                }
+                price = scanner.nextDouble();
+            }
             Products productNew = new Products(name, price);
             productList.add(productNew);
             sum += productNew.price;
