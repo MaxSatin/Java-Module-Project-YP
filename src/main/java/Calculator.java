@@ -3,24 +3,25 @@ import java.util.Scanner;
 
 public class Calculator {
 
-    ArrayList<Products> productList = new ArrayList<>();
-    Scanner scanner = new Scanner(System.in);
+    private ArrayList<Products> productList = new ArrayList<>();
+    private Scanner scanner = new Scanner(System.in);
 
-    double sum;
-    int divide;
+    private double sum;
+    private int peopleCount;
+    private String template;
 
     public void calcStart() {
         while (!scanner.hasNextInt()) {
             System.out.println("Введите, пожалуйста число");
             scanner.next();
         }
-        divide = scanner.nextInt();
+        peopleCount = scanner.nextInt();
         while (true) {
-            if (divide == 1) {
+            if (peopleCount == 1) {
                 System.out.println("Все оплатить придется самому");
                 break;
             }
-            if (divide > 1) {
+            if (peopleCount > 1) {
                 prodCount();
                 break;
             }
@@ -30,7 +31,7 @@ public class Calculator {
                     System.out.println("Введите, пожалуйста число");
                     scanner.next();
                 }
-                divide = scanner.nextInt();
+                peopleCount = scanner.nextInt();
             }
         }
     }
@@ -43,14 +44,14 @@ public class Calculator {
 
             System.out.println("Уточните стоимость продукта: ");
             while (!scanner.hasNextDouble()) {
-                System.out.println("Введите, пожалуйста число формате 1,45");
+                System.out.println("Введите, пожалуйста, число формате 1,45");
                 scanner.next();
             }
             double price = scanner.nextDouble();
             while (price < 0) {
                 System.out.println("Введите положительное число!");
                 while (!scanner.hasNextDouble()) {
-                    System.out.println("Введите, пожалуйста число формате 1,45");
+                    System.out.println("Введите, пожалуйста, число формате 1,45");
                     scanner.next();
                 }
                 price = scanner.nextDouble();
@@ -59,12 +60,10 @@ public class Calculator {
             productList.add(productNew);
             sum += productNew.price;
 
-            System.out.println("Продукт " + productNew.name + " стоимостью "
-                    + (Math.round(productNew.price * 100.0)/100.0) +
-                    " " + formatter((Math.round(productNew.price * 100.0)/100.0))
-                    + " добавлен в список.\nОбщая сумма составляет: "
-                    + (Math.round((sum) * 100.0)/100.0) +
-                    " " + formatter((Math.round((sum) * 100.0)/100.0)));
+            template = "Продукт %s стоимостью %.2f %s добавлен в список." +
+                            "\nОбщая сумма составляет: %.2f %s";
+            System.out.println(String.format(template, productNew.name, productNew.price,
+                    formatter(productNew.price), sum, formatter(sum)));
 
             System.out.println("\nЧтобы ввести новый товар введите любой символ.\n" +
                     "Чтобы закончить, введите 'Завершить'");
@@ -77,31 +76,36 @@ public class Calculator {
     }
 
     public void finalSum(){
+
         System.out.println("\nДобавленные товары: ");
-        for (Products product : productList)
-            System.out.println (product.name + " " + (Math.round(product.price * 100.0)/100.0) +
-                    " " + formatter ((Math.round(product.price * 100.0)/100.0)));
+        for (Products product : productList) {
+            template = "%s %.2f %s";
+            System.out.println(String.format(template, product.name,
+                    product.price, formatter(product.price)));
+        }
+        template = "Итоговая сумма: %.2f %s";
+        System.out.println(String.format(template, sum, formatter(sum)));
 
-        System.out.println("Итоговая сумма: " + (Math.round(sum * 100.0)/100.0) +
-                " " + formatter ((Math.round(sum * 100.0)/100.0)));
-
-        int name = divide;
-        double finalSum = sum / divide;
-        System.out.println("Каждый должен оплатить: " + (Math.round(finalSum * 100.0)/100.0) +
-                " " + formatter ((Math.round(finalSum * 100.0)/100.0)));
+        int name = peopleCount;
+        double finalSum = sum / peopleCount;
+        template = "Каждый должен оплатить %.2f %s";
+        System.out.println(String.format(template, finalSum, formatter(finalSum)));
     }
 
     public String formatter (double number) {
-        if ((number % 10) > 1 && (number % 10) < 5)
-            return "рубля";
-
-        else if ((number % 10) > 4 && (number % 10) < 10)
+        if ((number % 100) > 10 && (number % 100) < 20)
             return "рублей";
 
-        else if ((number % 10) > 0 && (number % 10) < 2)
+        else if ((number % 10) >= 5 && (number % 10) < 10)
+            return "рублей";
+
+        else if ((number % 10) >= 1 && (number % 10) < 2)
             return "рубль";
 
-        else if ((number % 10) == 0)
+        else if ((number % 10) > 1 && (number % 10) < 5)
+            return "рубля";
+
+        else if ((number % 10) >= 0 && (number % 10) < 1)
             return "рублей";
 
         return null;
